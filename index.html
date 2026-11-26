@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dulce Millonario 🍫</title>
+  <style>
+    /* ── Reset & variables ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #faeee0;
+      --caramel: #cc1a1a;
+      --brown:   #a80000;
+      --dark:    #1a1a1a;
+      --white:   #ffffff;
+      --gold:    #e31b23;
+      --shadow:  0 8px 32px rgba(200,0,0,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--cream);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── Navbar ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 2.5rem;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+      transition: background 0.3s;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+
+    .nav-logo:hover { transform: scale(1.05); }
+
+    .nav-logo img {
+      height: 52px;
+      width: 52px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      background: var(--white);
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--cream);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 26px; height: 3px;
+      background: var(--gold);
+      border-radius: 3px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.active span:nth-child(1){ transform: translateY(8px) rotate(45deg); }
+    .hamburger.active span:nth-child(2){ opacity: 0; }
+    .hamburger.active span:nth-child(3){ transform: translateY(-8px) rotate(-45deg); }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 7rem 1.5rem 4rem;
+      background: linear-gradient(145deg, #1a0000 0%, #8b0000 50%, #1a1a1a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.18;
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.18; }
+      90%  { opacity: 0.18; }
+      100% { transform: translateY(-120px) rotate(360deg); opacity: 0; }
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(227,27,35,0.15);
+      border: 1.5px solid var(--gold);
+      color: var(--gold);
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 0.35rem 1.2rem;
+      border-radius: 999px;
+      margin-bottom: 1.4rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      color: var(--white);
+      line-height: 1.1;
+      animation: fadeUp 0.9s ease 0.1s both;
+    }
+
+    .hero-title span { color: var(--gold); }
+
+    .hero-subtitle {
+      margin-top: 1.2rem;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 560px;
+      animation: fadeUp 1s ease 0.2s both;
+    }
+
+    .hero-cta {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 1s ease 0.35s both;
+    }
+
+    .btn {
+      padding: 0.85rem 2rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+    }
+
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+
+    .btn-primary { background: var(--gold); color: var(--dark); font-weight: bold; }
+    .btn-outline { background: transparent; border: 2px solid var(--gold); color: var(--gold); }
+
+    .scroll-down {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.4);
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      animation: bounce 2s infinite;
+    }
+
+    .scroll-down::after { content: '▼'; font-size: 0.75rem; }
+
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ── Section base ── */
+    section { padding: 6rem 1.5rem; }
+    .section-label {
+      display: block;
+      text-align: center;
+      font-size: 0.8rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--caramel);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      color: var(--brown);
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 3.5rem;
+      color: #7a5940;
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    /* ── Products grid ── */
+    #productos { background: var(--cream); }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 48px rgba(107,58,42,0.22);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 3px solid var(--gold);
+      transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .card-img {
+      transform: scale(1.04);
+    }
+
+    .card-img-wrap {
+      overflow: hidden;
+      position: relative;
+      height: 200px;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: var(--gold);
+      color: var(--white);
+      font-size: 0.72rem;
+      font-weight: bold;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      z-index: 2;
+    }
+
+    .card-body { padding: 1.4rem 1.6rem 1.8rem; }
+    .card-title { font-size: 1.25rem; color: var(--brown); margin-bottom: 0.5rem; }
+    .card-desc  { font-size: 0.95rem; color: #8a6040; line-height: 1.6; margin-bottom: 1rem; }
+
+    .card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      background: #fdf0f0;
+      color: var(--caramel);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid #f0d8d8;
+    }
+
+    /* ── About ── */
+    #nosotros {
+      background: linear-gradient(135deg, #1a0000 0%, #8b0000 100%);
+      color: var(--white);
+    }
+
+    #nosotros .section-label { color: var(--gold); }
+    #nosotros .section-title { color: var(--white); }
+    #nosotros .section-desc  { color: rgba(255,255,255,0.75); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .about-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: background 0.3s;
+    }
+
+    .about-card:hover { background: rgba(255,255,255,0.14); }
+    .about-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .about-card h3 { font-size: 1.1rem; color: var(--gold); margin-bottom: 0.5rem; }
+    .about-card p  { font-size: 0.95rem; color: rgba(255,255,255,0.72); line-height: 1.6; }
+
+    /* ── Sizes ── */
+    #tamanos { background: #fff5f5; }
+
+    .sizes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .size-card {
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border-top: 4px solid var(--caramel);
+      transition: transform 0.25s;
+      text-align: center;
+    }
+
+    .size-card:hover { transform: translateY(-5px); }
+
+    .size-card-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .size-card:hover .size-card-img { transform: scale(1.05); }
+
+    .size-card-body { padding: 1.2rem 1rem 1.4rem; }
+    .size-name  { font-size: 1.1rem; font-weight: bold; color: var(--brown); }
+    .size-desc  { font-size: 0.88rem; color: #9a7050; margin-top: 0.4rem; line-height: 1.5; }
+
+    /* ── Contact ── */
+    #contacto {
+      background: linear-gradient(135deg, #1a0000, #6b0000);
+      color: var(--white);
+      text-align: center;
+    }
+
+    #contacto .section-title { color: var(--white); }
+    #contacto .section-desc  { color: rgba(255,255,255,0.72); }
+
+    .contact-form {
+      max-width: 520px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.85rem 1.1rem;
+      border-radius: 10px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: var(--white);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder { color: rgba(255,255,255,0.45); }
+
+    .contact-form select option { background: #3b1c0c; color: var(--white); }
+
+    .contact-form input:focus,
+    .contact-form select:focus,
+    .contact-form textarea:focus { border-color: var(--gold); }
+
+    .contact-form textarea { resize: vertical; min-height: 110px; }
+    .contact-form .btn-primary { align-self: center; padding: 0.95rem 2.8rem; font-size: 1.05rem; }
+
+    .toast {
+      display: none;
+      margin-top: 1rem;
+      background: rgba(227,27,35,0.18);
+      border: 1.5px solid var(--gold);
+      color: var(--gold);
+      padding: 0.8rem 1.4rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: #1a0000;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    footer span { color: var(--gold); }
+
+    .footer-social {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.2rem;
+      font-size: 1.5rem;
+    }
+
+    .footer-social a {
+      text-decoration: none;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+
+    .footer-social a:hover { transform: scale(1.25); }
+
+    /* ── Admin / Costos ── */
+    #costos {
+      background: #0d0d0d;
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    /* Password gate */
+    .pw-gate {
+      max-width: 380px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 3rem 2rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+    }
+
+    .pw-gate .lock-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    .pw-gate h3 { color: var(--gold); font-size: 1.4rem; margin-bottom: 0.5rem; }
+    .pw-gate p  { color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+    .pw-input {
+      width: 100%;
+      padding: 0.85rem 1.1rem;
+      border-radius: 10px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.07);
+      color: var(--white);
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 1rem;
+      text-align: center;
+      letter-spacing: 3px;
+    }
+
+    .pw-input:focus { border-color: var(--gold); }
+    .pw-error { color: #ff6b6b; font-size: 0.85rem; margin-top: -0.5rem; margin-bottom: 0.8rem; display: none; }
+
+    /* Calculator panel */
+    .calc-panel { display: none; max-width: 860px; margin: 0 auto; }
+    .calc-panel.visible { display: block; }
+
+    .calc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .calc-header h3 { color: var(--gold); font-size: 1.5rem; }
+
+    .btn-logout {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.6);
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .btn-logout:hover { background: rgba(255,255,255,0.14); }
+
+    /* Product selector */
+    .calc-product-selector {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .prod-btn {
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.7);
+      transition: all 0.2s;
+    }
+
+    .prod-btn.active, .prod-btn:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #1a0000;
+      font-weight: bold;
+    }
+
+    /* Cost tables */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 680px) { .calc-grid { grid-template-columns: 1fr; } }
+
+    .cost-table {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 1.4rem;
+    }
+
+    .cost-table h4 {
+      color: var(--gold);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cost-row {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 0.6rem;
+      align-items: center;
+    }
+
+    .cost-row input[type="text"] {
+      flex: 1;
+      padding: 0.5rem 0.7rem;
+      border-radius: 7px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: var(--white);
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .cost-row input[type="number"] {
+      width: 110px;
+      padding: 0.5rem 0.7rem;
+      border-radius: 7px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: var(--white);
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+      text-align: right;
+    }
+
+    .cost-row input:focus {
+      border-color: var(--gold);
+    }
+
+    .cost-row .del-btn {
+      background: none;
+      border: none;
+      color: rgba(255,80,80,0.6);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 0 4px;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+
+    .cost-row .del-btn:hover { color: #ff4444; }
+
+    .add-row-btn {
+      background: none;
+      border: 1px dashed rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.4);
+      border-radius: 7px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: inherit;
+      width: 100%;
+      margin-top: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .add-row-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Units + margin row */
+    .calc-params {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 1.4rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .param-group { display: flex; flex-direction: column; gap: 0.3rem; }
+    .param-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; }
+
+    .param-input {
+      padding: 0.6rem 0.9rem;
+      border-radius: 8px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.07);
+      color: var(--white);
+      font-size: 1.1rem;
+      font-family: inherit;
+      outline: none;
+      width: 130px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .param-input:focus { border-color: var(--gold); }
+
+    /* Results */
+    .calc-results {
+      background: linear-gradient(135deg, #1a0000, #3a0000);
+      border: 1.5px solid var(--gold);
+      border-radius: 16px;
+      padding: 1.8rem;
+    }
+
+    .calc-results h4 {
+      color: var(--gold);
+      font-size: 1.1rem;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .result-box {
+      background: rgba(0,0,0,0.3);
+      border-radius: 12px;
+      padding: 1.1rem;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .result-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.4rem; }
+    .result-value { font-size: 1.5rem; font-weight: bold; color: #ffffff; }
+    .result-value.highlight { color: var(--gold); font-size: 1.9rem; }
+
+    .result-breakdown {
+      margin-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1rem;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.8;
+    }
+
+    .btn-calc {
+      background: var(--gold);
+      color: #1a0000;
+      font-weight: bold;
+      padding: 0.85rem 2.5rem;
+      border-radius: 999px;
+      border: none;
+      font-size: 1rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: block;
+      margin: 1.5rem auto 0;
+    }
+
+    .btn-calc:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(227,27,35,0.4); }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1100;
+      background: rgba(0,0,0,0.78);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+
+    .modal-box {
+      background: #1a0000;
+      border-radius: 20px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2.5rem 2rem;
+      position: relative;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity:0; }
+      to   { transform: translateY(0);    opacity:1; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem; right: 1.2rem;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--gold); }
+
+    .modal-title {
+      text-align: center;
+      color: var(--gold);
+      font-size: 1.6rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .modal-subtitle {
+      text-align: center;
+      color: rgba(255,255,255,0.55);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      letter-spacing: 1px;
+    }
+
+    .modal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .modal-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.25s, border-color 0.25s;
+      cursor: default;
+    }
+
+    .modal-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--gold);
+    }
+
+    .modal-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .modal-card-body {
+      padding: 0.9rem 1rem 1.1rem;
+      text-align: center;
+    }
+
+    .modal-card-name {
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+
+    .modal-card-price {
+      color: var(--gold);
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .modal-price-note {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.75rem;
+      margin-top: 0.2rem;
+    }
+
+    .modal-cta {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ── */
+    @media (max-width: 680px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        background: rgba(26,26,26,0.98);
+        padding: 1rem 0;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 0.75rem 2.5rem; display: block; }
+      .hamburger { display: flex; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav>
+    <a class="nav-logo" href="#hero">
+      <img src="logo.jpg" alt="Dulce Millonario" />
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#productos">Catalogos</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#tamanos">Envases</a></li>
+      <li><a href="#contacto">Pedidos</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section id="hero">
+    <div class="particles" id="particles"></div>
+    <span class="hero-badge">Postres artesanales en bandeja</span>
+    <h1 class="hero-title">
+      <span>Dulce</span><br>Millonario
+    </h1>
+    <p class="hero-subtitle">
+      <span style="display:block; font-size:1.5em; font-weight:bold; color:#ffffff; letter-spacing:2px;">Postres que enamoran</span>
+    </p>
+    <div class="hero-cta">
+      <a href="#productos" class="btn btn-primary">Ver productos</a>
+      <a href="#contacto"  class="btn btn-outline">Hacer un pedido</a>
+    </div>
+    <div class="scroll-down">Descubri mas</div>
+  </section>
+
+  <!-- ── Productos ── -->
+  <section id="productos">
+    <span class="section-label">Nuestro catalogo</span>
+    <h2 class="section-title">Que tenemos para vos?</h2>
+    <p class="section-desc">
+      Cada postre es preparado con ingredientes de calidad y mucho amor.
+      Perfectos para reuniones, cumpleanos, eventos o darte un gustito.
+    </p>
+
+    <div class="products-grid">
+
+      <div class="product-card reveal" data-delay="0">
+        <div class="card-img-wrap">
+          <img class="card-img" src="tiramisu.jpg" alt="Tiramisu Clasico" />
+          <span class="card-badge">Top</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Tiramisu Clasico</h3>
+          <p class="card-desc">
+            Capas de vainillas embebidas en cafe, crema mascarpone y un toque
+            de cacao en polvo. El clasico italiano que enamora.
+          </p>
+          <div class="card-tags">
+            <span class="tag">Cremoso</span>
+            <span class="tag">Cafe</span>
+            <span class="tag">Cacao</span>
+            <span class="tag">Sin horno</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-delay="100">
+        <div class="card-img-wrap">
+          <img class="card-img" src="chocotorta.jpg" alt="Chocotorta" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Chocotorta</h3>
+          <p class="card-desc">
+            El postre mas querido de Argentina. Galletitas Chocolinas,
+            queso crema y dulce de leche en capas infinitas de placer.
+          </p>
+          <div class="card-tags">
+            <span class="tag">Chocolate</span>
+            <span class="tag">Queso crema</span>
+            <span class="tag">Dulce de leche</span>
+            <span class="tag">Clasico arg.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-delay="200">
+        <div class="card-img-wrap" style="height:300px;">
+          <img class="card-img" style="height:300px;" src="ensalada.jpg" alt="Ensalada de Fruta" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Ensalada de Fruta</h3>
+          <p class="card-desc">
+            Frutas frescas de temporada combinadas con almibar, jugo de
+            naranja y un toque especial. Fresca, colorida y deliciosa.
+          </p>
+          <div class="card-tags">
+            <span class="tag">Fresco</span>
+            <span class="tag">Citrico</span>
+            <span class="tag">Colorido</span>
+            <span class="tag">Saludable</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-delay="300">
+        <div class="card-img-wrap" style="height:300px;">
+          <img class="card-img" style="height:300px;" src="tiramisu-oreo.jpg" alt="Tiramisu de Oreo" />
+          <span class="card-badge">Nuevo</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Tiramisu de Oreo</h3>
+          <p class="card-desc">
+            Una version irresistible del tiramisu clasico con galletas
+            Oreo trituradas, crema suave y trozos crujientes en cada capa.
+          </p>
+          <div class="card-tags">
+            <span class="tag">Oreo</span>
+            <span class="tag">Cremoso</span>
+            <span class="tag">Vainilla</span>
+            <span class="tag">Especial</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Nosotros ── -->
+  <section id="nosotros">
+    <span class="section-label">Nuestra historia</span>
+    <h2 class="section-title">Hecho con amor</h2>
+    <p class="section-desc">
+      Dulce Millonario nacio de la pasion por los postres y el deseo de
+      compartir momentos dulces con quienes mas queremos.
+    </p>
+
+    <div class="about-grid">
+      <div class="about-card reveal">
+        <div class="about-icon">&#127849;</div>
+        <h3>Ingredientes premium</h3>
+        <p>Seleccionamos los mejores ingredientes para garantizar sabores autenticos en cada bandeja.</p>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-icon">&#129293;</div>
+        <h3>Hecho a mano</h3>
+        <p>Cada postre es preparado de forma artesanal, con dedicacion y cuidado en cada detalle.</p>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-icon">&#128230;</div>
+        <h3>Listo para llevar</h3>
+        <p>Presentados en bandejas de plastico practicas y elegantes, perfectas para cualquier ocasion.</p>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-icon">&#128640;</div>
+        <h3>Entrega rapida</h3>
+        <p>Coordinamos la entrega para que tu pedido llegue en perfectas condiciones y siempre fresco.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:2.5rem;">
+      <a href="https://wa.me/543757466613" target="_blank" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:0.6rem; font-size:1.05rem; text-decoration:none;">
+        &#128172; Escribinos al WhatsApp
+      </a>
+      <p style="margin-top:0.9rem; color:rgba(255,255,255,0.45); font-size:0.88rem;">+54 3757 466613 &nbsp;&middot;&nbsp; Respondemos a la brevedad</p>
+    </div>
+  </section>
+
+  <!-- ── Tamaños ── -->
+  <section id="tamanos">
+    <span class="section-label">Nuestros envases</span>
+    <h2 class="section-title">Envases disponibles</h2>
+    <p class="section-desc">
+      Tenemos bandejas para toda ocasion, desde una merienda intima
+      hasta una reunion con muchos invitados.
+    </p>
+
+    <div class="sizes-grid">
+      <div class="size-card reveal" id="cardRect" style="cursor:pointer;" title="Ver postres en bandeja rectangular">
+        <img class="size-card-img" src="envase-rect.jpg" alt="Envase rectangular" />
+        <div class="size-card-body">
+          <div class="size-name">Bandeja rectangular</div>
+          <div class="size-desc">Ideal para Tiramisu Clasico y Chocotorta. Practica y elegante.</div>
+          <div style="margin-top:0.7rem; color:var(--caramel); font-size:0.82rem; letter-spacing:1px;">&#128065; Ver postres en esta bandeja</div>
+        </div>
+      </div>
+      <div class="size-card reveal" id="cardCirc" style="cursor:pointer;" title="Ver postres en envase circular">
+        <img class="size-card-img" src="envase-round.jpg" alt="Envase redondo" />
+        <div class="size-card-body">
+          <div class="size-name">Envase redondo</div>
+          <div class="size-desc">Perfecto para Tiramisu de Oreo y Ensalada de Fruta. Hermetico y resistente.</div>
+          <div style="margin-top:0.7rem; color:var(--caramel); font-size:0.82rem; letter-spacing:1px;">&#128065; Ver postres en este envase</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contacto ── -->
+  <section id="contacto">
+    <span class="section-label">Hace tu pedido!</span>
+    <h2 class="section-title">Contactanos</h2>
+    <p class="section-desc">
+      Completa el formulario y te respondemos a la brevedad para confirmar
+      tu pedido con todos los detalles.
+    </p>
+
+    <form class="contact-form" id="orderForm" novalidate>
+      <div class="form-row">
+        <input type="text" id="fname" placeholder="Tu nombre *" required />
+        <input type="tel"  id="fphone" placeholder="WhatsApp / Telefono" />
+      </div>
+      <select id="fproduct" required onchange="toggleCombo()">
+        <option value="" disabled selected>Selecciona un postre *</option>
+        <option>Tiramisu Clasico</option>
+        <option>Chocotorta</option>
+        <option>Ensalada de Fruta</option>
+        <option>Tiramisu de Oreo</option>
+        <option value="Combo (varios postres)">Combo (varios postres)</option>
+      </select>
+
+      <!-- Combo selector — solo visible si elige Combo -->
+      <div id="comboBox" style="display:none; background:rgba(255,255,255,0.06); border:1.5px solid var(--gold); border-radius:12px; padding:1.1rem 1.3rem;">
+        <p style="color:var(--gold); font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:0.8rem;">&#127381; Elegí los postres de tu combo:</p>
+        <label style="display:flex;align-items:center;gap:0.6rem;color:#fff;font-size:0.95rem;margin-bottom:0.5rem;cursor:pointer;">
+          <input type="checkbox" id="cb-tiramisu" value="Tiramisu Clasico" style="accent-color:var(--gold);width:16px;height:16px;" /> Tiramisu Clasico
+        </label>
+        <label style="display:flex;align-items:center;gap:0.6rem;color:#fff;font-size:0.95rem;margin-bottom:0.5rem;cursor:pointer;">
+          <input type="checkbox" id="cb-choco" value="Chocotorta" style="accent-color:var(--gold);width:16px;height:16px;" /> Chocotorta
+        </label>
+        <label style="display:flex;align-items:center;gap:0.6rem;color:#fff;font-size:0.95rem;margin-bottom:0.5rem;cursor:pointer;">
+          <input type="checkbox" id="cb-oreo" value="Tiramisu de Oreo" style="accent-color:var(--gold);width:16px;height:16px;" /> Tiramisu de Oreo
+        </label>
+        <label style="display:flex;align-items:center;gap:0.6rem;color:#fff;font-size:0.95rem;cursor:pointer;">
+          <input type="checkbox" id="cb-ensalada" value="Ensalada de Fruta" style="accent-color:var(--gold);width:16px;height:16px;" /> Ensalada de Fruta
+        </label>
+      </div>
+      <select id="fsize">
+        <option value="" disabled selected>Selecciona el envase</option>
+        <option>Bandeja rectangular</option>
+        <option>Bandeja circular</option>
+      </select>
+      <textarea id="fmsg" placeholder="Comentarios, fecha de entrega, direccion..."></textarea>
+      <button type="submit" class="btn btn-primary">Enviar pedido</button>
+      <div class="toast" id="toast">
+        Gracias! Recibimos tu pedido y te contactamos pronto.
+      </div>
+    </form>
+  </section>
+
+  <!-- ── Admin: Calculadora de Costos ── -->
+  <section id="costos">
+    <span class="section-label" style="color:rgba(255,255,255,0.3);">Solo para administradores</span>
+    <h2 class="section-title" style="color:var(--gold);">&#128274; Calculadora de Costos</h2>
+
+    <!-- Password gate -->
+    <div class="pw-gate" id="pwGate">
+      <div class="lock-icon">&#128274;</div>
+      <h3>Acceso restringido</h3>
+      <p>Ingresa la contrasena para acceder a la gestion de costos</p>
+      <input type="password" class="pw-input" id="pwInput" placeholder="Contrasena" />
+      <p class="pw-error" id="pwError">Contrasena incorrecta. Intentalo de nuevo.</p>
+      <button class="btn btn-primary" onclick="checkPassword()" style="width:100%;">Ingresar</button>
+    </div>
+
+    <!-- Calculator panel (hidden until unlocked) -->
+    <div class="calc-panel" id="calcPanel">
+
+      <div class="calc-header">
+        <h3>&#128200; Calculadora de Costos</h3>
+        <button class="btn-logout" onclick="lockAdmin()">&#128274; Cerrar sesion</button>
+      </div>
+
+      <!-- ── Pedidos recibidos ── -->
+      <div style="margin-bottom:2.5rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.8rem;margin-bottom:1rem;">
+          <h4 style="color:var(--gold);font-size:1.1rem;">&#128235; Pedidos recibidos</h4>
+          <button onclick="clearOrders()" style="background:rgba(255,80,80,0.15);border:1px solid rgba(255,80,80,0.3);color:rgba(255,120,120,0.9);border-radius:999px;padding:0.3rem 0.9rem;font-size:0.8rem;cursor:pointer;font-family:inherit;">Limpiar todos</button>
+        </div>
+        <div id="ordersPanel">
+          <p style="color:rgba(255,255,255,0.3);font-size:0.9rem;text-align:center;padding:1.5rem;">Aun no hay pedidos recibidos.</p>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin-bottom:2.5rem;" />
+
+      <!-- Product selector -->
+      <div class="calc-product-selector">
+        <button class="prod-btn active" onclick="selectProduct(this, 'Tiramisu Clasico')">Tiramisu Clasico</button>
+        <button class="prod-btn" onclick="selectProduct(this, 'Chocotorta')">Chocotorta</button>
+        <button class="prod-btn" onclick="selectProduct(this, 'Tiramisu de Oreo')">Tiramisu de Oreo</button>
+        <button class="prod-btn" onclick="selectProduct(this, 'Ensalada de Fruta')">Ensalada de Fruta</button>
+      </div>
+
+      <!-- Cost tables -->
+      <div class="calc-grid">
+
+        <!-- Costos Fijos -->
+        <div class="cost-table">
+          <h4>&#127968; Costos Fijos <span style="font-size:0.75rem;color:rgba(255,255,255,0.4);font-weight:normal;">(por periodo)</span></h4>
+          <div id="fixedRows">
+            <div class="cost-row">
+              <input type="text" placeholder="Descripcion (ej: Alquiler)" value="Alquiler" />
+              <input type="number" placeholder="$ 0" min="0" value="0" oninput="calcResults()" />
+              <button class="del-btn" onclick="delRow(this)">&#10005;</button>
+            </div>
+            <div class="cost-row">
+              <input type="text" placeholder="Descripcion" value="Servicios (luz/gas)" />
+              <input type="number" placeholder="$ 0" min="0" value="0" oninput="calcResults()" />
+              <button class="del-btn" onclick="delRow(this)">&#10005;</button>
+            </div>
+            <div class="cost-row">
+              <input type="text" placeholder="Descripcion" value="Mano de obra" />
+              <input type="number" placeholder="$ 0" min="0" value="0" oninput="calcResults()" />
+              <button class="del-btn" onclick="delRow(this)">&#10005;</button>
+            </div>
+          </div>
+          <button class="add-row-btn" onclick="addRow('fixedRows')">+ Agregar costo fijo</button>
+        </div>
+
+        <!-- Costos Variables -->
+        <div class="cost-table">
+          <h4>&#127803; Costos Variables <span style="font-size:0.75rem;color:rgba(255,255,255,0.4);font-weight:normal;">(por unidad)</span></h4>
+          <div id="varRows">
+            <div class="cost-row">
+              <input type="text" placeholder="Ingrediente / insumo" value="Ingredientes" />
+              <input type="number" placeholder="$ 0" min="0" value="0" oninput="calcResults()" />
+              <button class="del-btn" onclick="delRow(this)">&#10005;</button>
+            </div>
+            <div class="cost-row">
+              <input type="text" placeholder="Ingrediente / insumo" value="Envase / bandeja" />
+              <input type="number" placeholder="$ 0" min="0" value="0" oninput="calcResults()" />
+              <button class="del-btn" onclick="delRow(this)">&#10005;</button>
+            </div>
+            <div class="cost-row">
+              <input type="text" placeholder="Ingrediente / insumo" value="Delivery / traslado" />
+              <input type="number" placeholder="$ 0" min="0" value="0" oninput="calcResults()" />
+              <button class="del-btn" onclick="delRow(this)">&#10005;</button>
+            </div>
+          </div>
+          <button class="add-row-btn" onclick="addRow('varRows')">+ Agregar costo variable</button>
+        </div>
+
+      </div>
+
+      <!-- Params -->
+      <div class="calc-params">
+        <div class="param-group">
+          <span class="param-label">Unidades producidas</span>
+          <input class="param-input" type="number" id="unitsInput" value="10" min="1" oninput="calcResults()" />
+        </div>
+        <div class="param-group">
+          <span class="param-label">Ganancia deseada %</span>
+          <input class="param-input" type="number" id="marginInput" value="40" min="0" max="500" oninput="calcResults()" />
+        </div>
+        <div class="param-group">
+          <span class="param-label">Precio de venta manual $</span>
+          <input class="param-input" type="number" id="manualPrice" value="" placeholder="Opcional" min="0" oninput="calcResults()" />
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="calc-results">
+        <h4>&#128202; Resumen de costos — <span id="resultProduct">Tiramisu Clasico</span></h4>
+        <div class="results-grid">
+          <div class="result-box">
+            <div class="result-label">Costo fijo total</div>
+            <div class="result-value" id="rFixed">$ 0</div>
+          </div>
+          <div class="result-box">
+            <div class="result-label">Costo fijo x unidad</div>
+            <div class="result-value" id="rFixedUnit">$ 0</div>
+          </div>
+          <div class="result-box">
+            <div class="result-label">Costo variable x unidad</div>
+            <div class="result-value" id="rVar">$ 0</div>
+          </div>
+          <div class="result-box">
+            <div class="result-label">Costo total x unidad</div>
+            <div class="result-value" id="rTotal">$ 0</div>
+          </div>
+          <div class="result-box">
+            <div class="result-label">Precio sugerido</div>
+            <div class="result-value highlight" id="rPrice">$ 0</div>
+          </div>
+          <div class="result-box">
+            <div class="result-label">Ganancia x unidad</div>
+            <div class="result-value" id="rProfit">$ 0</div>
+          </div>
+        </div>
+        <div class="result-breakdown" id="rBreakdown"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Modal: Envase Circular ── -->
+  <div class="modal-overlay" id="modalCirc">
+    <div class="modal-box">
+      <button class="modal-close" id="modalCloseCirc" aria-label="Cerrar">&times;</button>
+      <h2 class="modal-title">Envase Circular</h2>
+      <p class="modal-subtitle">&#128230; Todos nuestros postres disponibles en este envase</p>
+
+      <div class="modal-grid">
+
+        <div class="modal-card">
+          <img src="circ-tiramisu.jpg" alt="Tiramisu Clasico en envase circular" />
+          <div class="modal-card-body">
+            <div class="modal-card-name">Tiramisu Clasico</div>
+            <div class="modal-card-price">$ 7.000</div>
+            <div class="modal-price-note"><a href="https://wa.me/543757466613" target="_blank" style="color:inherit;text-decoration:underline;">Consultar por WhatsApp</a></div>
+          </div>
+        </div>
+
+        <div class="modal-card">
+          <img src="circ-chocotorta.jpg" alt="Chocotorta en envase circular" />
+          <div class="modal-card-body">
+            <div class="modal-card-name">Chocotorta</div>
+            <div class="modal-card-price">$ 7.000</div>
+            <div class="modal-price-note"><a href="https://wa.me/543757466613" target="_blank" style="color:inherit;text-decoration:underline;">Consultar por WhatsApp</a></div>
+          </div>
+        </div>
+
+        <div class="modal-card">
+          <img src="circ-oreo.jpg" alt="Tiramisu de Oreo en envase circular" />
+          <div class="modal-card-body">
+            <div class="modal-card-name">Tiramisu de Oreo</div>
+            <div class="modal-card-price">$ 7.000</div>
+            <div class="modal-price-note"><a href="https://wa.me/543757466613" target="_blank" style="color:inherit;text-decoration:underline;">Consultar por WhatsApp</a></div>
+          </div>
+        </div>
+
+        <div class="modal-card">
+          <img src="circ-ensalada.jpg" alt="Ensalada de Fruta en envase circular" />
+          <div class="modal-card-body">
+            <div class="modal-card-name">Ensalada de Fruta</div>
+            <div class="modal-card-price">$ 6.000</div>
+            <div class="modal-price-note"><a href="https://wa.me/543757466613" target="_blank" style="color:inherit;text-decoration:underline;">Consultar por WhatsApp</a></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-cta">
+        <a href="#contacto" class="btn btn-primary" id="modalPedidoBtnCirc">Hacer un pedido</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal: Bandeja Rectangular ── -->
+  <div class="modal-overlay" id="modalRect">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose" aria-label="Cerrar">&times;</button>
+      <h2 class="modal-title">Bandeja Rectangular</h2>
+      <p class="modal-subtitle">&#128230; Todos nuestros postres disponibles en este envase</p>
+
+      <div class="modal-grid">
+
+        <div class="modal-card">
+          <img src="rect-tiramisu.jpg" alt="Tiramisu Clasico en bandeja rectangular" />
+          <div class="modal-card-body">
+            <div class="modal-card-name">Tiramisu Clasico</div>
+            <div class="modal-card-price">$ 10.000</div>
+            <div class="modal-price-note"><a href="https://wa.me/543757466613" target="_blank" style="color:inherit;text-decoration:underline;">Consultar por WhatsApp</a></div>
+          </div>
+        </div>
+
+        <div class="modal-card">
+          <img src="rect-chocotorta.jpg" alt="Chocotorta en bandeja rectangular" />
+          <div class="modal-card-body">
+            <div class="modal-card-name">Chocotorta</div>
+            <div class="modal-card-price">$ 10.000</div>
+            <div class="modal-price-note"><a href="https://wa.me/543757466613" target="_blank" style="color:inherit;text-decoration:underline;">Consultar por WhatsApp</a></div>
+          </div>
+        </div>
+
+        <div class="modal-card">
+          <img src="rect-oreo.jpg" alt="Tiramisu de Oreo en bandeja rectangular" />
+          <div class="modal-card-body">
+            <div class="modal-card-name">Tiramisu de Oreo</div>
+            <div class="modal-card-price">$ 10.000</div>
+            <div class="modal-price-note"><a href="https://wa.me/543757466613" target="_blank" style="color:inherit;text-decoration:underline;">Consultar por WhatsApp</a></div>
+          </div>
+        </div>
+
+        <div class="modal-card">
+          <img src="rect-ensalada.jpg" alt="Ensalada de Fruta en bandeja rectangular" />
+          <div class="modal-card-body">
+            <div class="modal-card-name">Ensalada de Fruta</div>
+            <div class="modal-card-price">$ 8.000</div>
+            <div class="modal-price-note"><a href="https://wa.me/543757466613" target="_blank" style="color:inherit;text-decoration:underline;">Consultar por WhatsApp</a></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-cta">
+        <a href="#contacto" class="btn btn-primary" id="modalPedidoBtn">Hacer un pedido</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="footer-social">
+      <a href="#" title="Instagram">&#128247;</a>
+      <a href="https://wa.me/543757466613" title="WhatsApp" target="_blank">&#128172;</a>
+      <a href="#" title="Facebook">&#128218;</a>
+    </div>
+    <p>2026 <span>Dulce Millonario</span> &middot; Postres artesanales en bandeja &middot; Hecho con amor</p>
+    <p style="margin-top:0.8rem;"><a href="#costos" style="color:rgba(255,255,255,0.2);font-size:0.78rem;text-decoration:none;letter-spacing:1px;">&#128274; Admin</a></p>
+  </footer>
+
+  <script>
+    /* ── Hamburger menu ── */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+
+    hamburger.addEventListener('click', function() {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('open');
+    });
+
+    navLinks.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('open');
+      });
+    });
+
+    /* ── Floating particles in hero ── */
+    var container = document.getElementById('particles');
+    var particleList = ['9749','127850','127827','10084','11088','127856','127874','127866'];
+
+    for (var i = 0; i < 20; i++) {
+      var p = document.createElement('div');
+      p.className = 'particle';
+
+      var size = Math.random() * 28 + 14;
+      var left = Math.random() * 100;
+      var dur  = Math.random() * 12 + 8;
+      var del  = Math.random() * 10;
+      var code = particleList[Math.floor(Math.random() * particleList.length)];
+
+      p.style.cssText =
+        'font-size:' + size + 'px;' +
+        'left:' + left + '%;' +
+        'animation-duration:' + dur + 's;' +
+        'animation-delay:-' + del + 's;' +
+        'border-radius:0;background:transparent;opacity:0.22;';
+      p.innerHTML = '&#' + code + ';';
+      container.appendChild(p);
+    }
+
+    /* ── Scroll reveal ── */
+    var reveals = document.querySelectorAll('.reveal');
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var delay = entry.target.dataset.delay || 0;
+          setTimeout(function() {
+            entry.target.classList.add('visible');
+          }, Number(delay));
+        }
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach(function(el) { observer.observe(el); });
+
+    /* ── Form submission ── */
+    var form  = document.getElementById('orderForm');
+    var toast = document.getElementById('toast');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var name    = document.getElementById('fname').value.trim();
+      var product = document.getElementById('fproduct').value;
+
+      if (!name || !product) {
+        alert('Por favor completa tu nombre y elige un postre');
+        return;
+      }
+
+      /* Validate combo */
+      var comboItems = [];
+      if (product === 'Combo (varios postres)') {
+        comboItems = getComboItems();
+        if (!comboItems.length) {
+          alert('Por favor selecciona al menos un postre para el combo');
+          return;
+        }
+      }
+
+      /* Save order */
+      saveOrder({
+        name:    name,
+        phone:   document.getElementById('fphone').value.trim(),
+        product: product,
+        combo:   comboItems,
+        envase:  document.getElementById('fsize').value,
+        msg:     document.getElementById('fmsg').value.trim()
+      });
+
+      var btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      setTimeout(function() {
+        btn.textContent = 'Pedido enviado!';
+        toast.style.display = 'block';
+        form.reset();
+        document.getElementById('comboBox').style.display = 'none';
+
+        setTimeout(function() {
+          btn.disabled = false;
+          btn.textContent = 'Enviar pedido';
+          toast.style.display = 'none';
+        }, 5000);
+      }, 1400);
+    });
+
+    /* ── Modal: Envase Circular ── */
+    var modalCirc        = document.getElementById('modalCirc');
+    var cardCirc         = document.getElementById('cardCirc');
+    var modalCloseCirc   = document.getElementById('modalCloseCirc');
+    var modalPedidoCirc  = document.getElementById('modalPedidoBtnCirc');
+
+    function openModalCirc() {
+      modalCirc.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModalCirc() {
+      modalCirc.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    cardCirc.addEventListener('click', openModalCirc);
+    modalCloseCirc.addEventListener('click', closeModalCirc);
+
+    modalCirc.addEventListener('click', function(e) {
+      if (e.target === modalCirc) closeModalCirc();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    modalPedidoCirc.addEventListener('click', closeModalCirc);
+
+    /* ── Modal: Bandeja Rectangular ── */
+    var modalRect   = document.getElementById('modalRect');
+    var cardRect    = document.getElementById('cardRect');
+    var modalClose  = document.getElementById('modalClose');
+    var modalPedido = document.getElementById('modalPedidoBtn');
+
+    function openModal() {
+      modalRect.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modalRect.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    cardRect.addEventListener('click', openModal);
+    modalClose.addEventListener('click', closeModal);
+
+    modalRect.addEventListener('click', function(e) {
+      if (e.target === modalRect) closeModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    modalPedido.addEventListener('click', closeModal);
+
+    /* ── Combo selector ── */
+    function toggleCombo() {
+      var sel = document.getElementById('fproduct').value;
+      document.getElementById('comboBox').style.display =
+        (sel === 'Combo (varios postres)') ? 'block' : 'none';
+    }
+
+    function getComboItems() {
+      var items = [];
+      ['cb-tiramisu','cb-choco','cb-oreo','cb-ensalada'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el && el.checked) items.push(el.value);
+      });
+      return items;
+    }
+
+    /* ── Orders (localStorage) ── */
+    function saveOrder(order) {
+      var orders = JSON.parse(localStorage.getItem('dmOrders') || '[]');
+      order.id   = Date.now();
+      order.time = new Date().toLocaleString('es-AR');
+      order.read = false;
+      orders.unshift(order);
+      localStorage.setItem('dmOrders', JSON.stringify(orders));
+    }
+
+    function loadOrders() {
+      var orders  = JSON.parse(localStorage.getItem('dmOrders') || '[]');
+      var panel   = document.getElementById('ordersPanel');
+      if (!orders.length) {
+        panel.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.9rem;text-align:center;padding:1.5rem;">Aun no hay pedidos recibidos.</p>';
+        return;
+      }
+      panel.innerHTML = orders.map(function(o) {
+        var comboStr = (o.combo && o.combo.length) ? '<br><span style="color:var(--gold);">Combo: </span>' + o.combo.join(', ') : '';
+        return '<div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-left:4px solid var(--gold);border-radius:10px;padding:1rem 1.2rem;margin-bottom:0.8rem;">' +
+          '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.5rem;">' +
+          '<strong style="color:#fff;font-size:1rem;">&#128100; ' + o.name + '</strong>' +
+          '<span style="color:rgba(255,255,255,0.35);font-size:0.78rem;">&#128337; ' + o.time + '</span></div>' +
+          '<div style="font-size:0.88rem;color:rgba(255,255,255,0.65);line-height:1.8;">' +
+          (o.phone ? '&#128222; ' + o.phone + '<br>' : '') +
+          '&#127874; ' + o.product + comboStr + '<br>' +
+          (o.envase ? '&#128230; ' + o.envase + '<br>' : '') +
+          (o.msg    ? '&#128172; ' + o.msg : '') +
+          '</div></div>';
+      }).join('');
+    }
+
+    function clearOrders() {
+      if (confirm('Eliminar todos los pedidos?')) {
+        localStorage.removeItem('dmOrders');
+        loadOrders();
+      }
+    }
+
+    /* ── Admin: Calculadora de Costos ── */
+    var ADMIN_PASSWORD = 'dulce2026';
+    var currentProduct = 'Tiramisu Clasico';
+
+    // Enter key on password field
+    document.getElementById('pwInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    function checkPassword() {
+      var val = document.getElementById('pwInput').value;
+      if (val === ADMIN_PASSWORD) {
+        document.getElementById('pwGate').style.display = 'none';
+        document.getElementById('calcPanel').classList.add('visible');
+        sessionStorage.setItem('dmAdmin', '1');
+        calcResults();
+        loadOrders();
+      } else {
+        var err = document.getElementById('pwError');
+        err.style.display = 'block';
+        document.getElementById('pwInput').value = '';
+        setTimeout(function() { err.style.display = 'none'; }, 3000);
+      }
+    }
+
+    function lockAdmin() {
+      sessionStorage.removeItem('dmAdmin');
+      document.getElementById('pwInput').value = '';
+      document.getElementById('pwGate').style.display = 'block';
+      document.getElementById('calcPanel').classList.remove('visible');
+    }
+
+    // Restore session
+    if (sessionStorage.getItem('dmAdmin') === '1') {
+      document.getElementById('pwGate').style.display = 'none';
+      document.getElementById('calcPanel').classList.add('visible');
+      calcResults();
+      loadOrders();
+    }
+
+    function selectProduct(btn, name) {
+      currentProduct = name;
+      document.querySelectorAll('.prod-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('resultProduct').textContent = name;
+      calcResults();
+    }
+
+    function addRow(containerId) {
+      var container = document.getElementById(containerId);
+      var row = document.createElement('div');
+      row.className = 'cost-row';
+      row.innerHTML =
+        '<input type="text" placeholder="Descripcion" />' +
+        '<input type="number" placeholder="$ 0" min="0" value="0" oninput="calcResults()" />' +
+        '<button class="del-btn" onclick="delRow(this)">&#10005;</button>';
+      container.appendChild(row);
+    }
+
+    function delRow(btn) {
+      btn.closest('.cost-row').remove();
+      calcResults();
+    }
+
+    function getSum(containerId) {
+      var total = 0;
+      var rows = document.querySelectorAll('#' + containerId + ' input[type="number"]');
+      rows.forEach(function(inp) {
+        total += parseFloat(inp.value) || 0;
+      });
+      return total;
+    }
+
+    function fmt(n) {
+      return '$ ' + Math.round(n).toLocaleString('es-AR');
+    }
+
+    function calcResults() {
+      var units   = Math.max(1, parseFloat(document.getElementById('unitsInput').value) || 1);
+      var margin  = parseFloat(document.getElementById('marginInput').value) || 0;
+      var manual  = parseFloat(document.getElementById('manualPrice').value) || 0;
+
+      var totalFixed   = getSum('fixedRows');
+      var fixedPerUnit = totalFixed / units;
+      var varPerUnit   = getSum('varRows');
+      var costPerUnit  = fixedPerUnit + varPerUnit;
+      var suggested    = costPerUnit * (1 + margin / 100);
+      var sellPrice    = manual > 0 ? manual : suggested;
+      var profit       = sellPrice - costPerUnit;
+      var totalRevenue = sellPrice * units;
+      var totalCost    = costPerUnit * units;
+      var totalProfit  = totalRevenue - totalCost;
+
+      document.getElementById('rFixed').textContent     = fmt(totalFixed);
+      document.getElementById('rFixedUnit').textContent = fmt(fixedPerUnit);
+      document.getElementById('rVar').textContent       = fmt(varPerUnit);
+      document.getElementById('rTotal').textContent     = fmt(costPerUnit);
+      document.getElementById('rPrice').textContent     = fmt(sellPrice);
+      document.getElementById('rProfit').textContent    = fmt(profit);
+
+      var rentabilidad = costPerUnit > 0 ? ((profit / costPerUnit) * 100).toFixed(1) : 0;
+
+      document.getElementById('rBreakdown').innerHTML =
+        '&#128197; <strong style="color:#fff">Produccion total (' + units + ' unidades):</strong><br>' +
+        '&nbsp;&nbsp;Costo total: ' + fmt(totalCost) +
+        ' &nbsp;|&nbsp; Ingresos totales: ' + fmt(totalRevenue) +
+        ' &nbsp;|&nbsp; <strong style="color:var(--gold)">Ganancia total: ' + fmt(totalProfit) + '</strong><br>' +
+        '&#128201; Rentabilidad real: <strong style="color:var(--gold)">' + rentabilidad + '%</strong>' +
+        (manual > 0 ? ' &nbsp;(usando precio manual)' : ' &nbsp;(precio sugerido con ' + margin + '% de margen)');
+    }
+
+    /* ── Active nav link on scroll ── */
+    var sections = document.querySelectorAll('section[id]');
+    var navAs    = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', function() {
+      var current = '';
+      sections.forEach(function(sec) {
+        if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+      });
+      navAs.forEach(function(a) {
+        a.style.color = (a.getAttribute('href') === '#' + current) ? 'var(--gold)' : '';
+      });
+    }, { passive: true });
+  </script>
+</body>
+</html>
